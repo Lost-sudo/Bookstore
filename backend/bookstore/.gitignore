@@ -1,5 +1,5 @@
 .env                      # Contains sensitive environment variables (SECRET_KEY, DB credentials, API keys)
-env/
+../env/
 .python-version           # For pyenv users
 
 *.pyc                     # Compiled Python bytecode files
