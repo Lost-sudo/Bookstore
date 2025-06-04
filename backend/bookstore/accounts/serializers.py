@@ -16,17 +16,18 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ['email', 'full_name', 'password', 'password2', 'is_seller']
 
-        def validate(self, data):
-            if data['password'] != data['password2']:
-                raise serializers.ValidationError({"password": "Passwords do not match"})
-            return data
+
+    def validate(self, data):
+        if data['password'] != data['password2']:
+            raise serializers.ValidationError({"password": "Passwords do not match"})
+        return data
         
-        def create(self, validated_data):
-            validated_data.pop('password2')
-            user = User.objects.create_user(
-                email=validated_data['email'],
-                full_name=validated_data['full_name'],
-                password=validated_data['password'],
-                is_seller=validated_data('is_seller', False)
-            )
-            return user
+    def create(self, validated_data):
+        validated_data.pop('password2')
+        user = User.objects.create_user(
+        email=validated_data['email'],
+        full_name=validated_data['full_name'],
+        password=validated_data['password'],
+        is_seller=validated_data.get('is_seller', False)
+        )
+        return user
