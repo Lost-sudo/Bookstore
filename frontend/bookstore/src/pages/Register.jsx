@@ -24,15 +24,18 @@ export default function Register() {
     }
     setLoading(true);
 
+    const payload = {
+      email: data.email,
+      full_name: data.full_name,
+      password: data.password,
+      password2: data.confirm_password,
+      phone_number: data.phone_number,
+    };
+    
+
     try {
-      const response = await signupApi({
-        email: data.email,
-        full_name: data.full_name,
-        password: data.password,
-        password2: data.confirm_password,
-        phone_number: data.phone_number,
-        is_seller: data.is_seller || false,
-      });
+      const response = await signupApi(payload);
+      
       if (response.access && response.refresh) {
         localStorage.setItem("access", response.access);
         localStorage.setItem("refresh", response.refresh);
@@ -113,7 +116,7 @@ export default function Register() {
             <input
               type="tel"
               id="phone_number"
-              {...register("phone_number")}
+              {...register("phone_number", {required: "Phone number is required"})}
               placeholder="Phone Number"
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
@@ -172,20 +175,6 @@ export default function Register() {
                 This field is required
               </span>
             )}
-          </div>
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="is_seller"
-              {...register("is_seller")}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-            />
-            <label
-              htmlFor="is_seller"
-              className="ml-2 block text-sm font-medium text-gray-700"
-            >
-              Register as Seller
-            </label>
           </div>
           <button
             type="submit"
